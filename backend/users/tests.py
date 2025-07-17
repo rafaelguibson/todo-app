@@ -1,4 +1,4 @@
-from django.test import TestCase
+import pytest
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -10,6 +10,6 @@ def test_create_user():
     assert user.is_active
     assert not user.is_staff
     assert not user.is_superuser
-    #Verificar se a senha foi hadheada
+    #Verificar se a senha foi hasheada
     assert user.check_password('password123')
     assert not user.check_password('wrongpassword')

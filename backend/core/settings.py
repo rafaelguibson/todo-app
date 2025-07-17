@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
+# Definição de autenticação por usuário customizado
 AUTH_USER_MODEL = 'users.CustomUser'
 
 INSTALLED_APPS = [
@@ -38,8 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # Apps de terceitos
     'rest_framework',
     'rest_framework_simplejwt',
+    
+    # Apps Locais
     'tasks',
     'users',
 ]
