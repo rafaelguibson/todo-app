@@ -27,17 +27,17 @@ def test_register_user_endpoint():
 @pytest.mark.django_db
 def test_register_user_with_existing_username():
     """
-    Testa para ver se a validação de registro duplicado está ok.
+    Testa que o registro falha se o nome de usuário já existir.
     """
-    User.objects.create_user(username='repeated_user',password='testpassword123')
+    User.objects.create_user(username='existinguser', password='password123')
     client = APIClient()
     url = '/api/auth/register/'
     data = {
-        'username': 'nerepeated_userwuser',
-        'password': 'testpassword123',
-        'email': 'repeated_userwuser@email.com',
-        'date_of_birth': '2000-01-01'
+        'username': 'existinguser',
+        'password': 'newpassword123',
+        'email': 'existing@example.com',
+        'date_of_birth': '1999-01-01'
     }
     response = client.post(url, data, format='json')
-    
+
     assert response.status_code == status.HTTP_400_BAD_REQUEST
