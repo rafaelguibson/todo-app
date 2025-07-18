@@ -1,19 +1,41 @@
 import AuthForm from "../components/AuthForm";
-import axios from "axios";
+import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
 
 export default function Register() {
   const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
+  const formRef = useRef();
 
   async function handleRegister({ username, password, email }) {
     try {
-      await axios.post("/api/users/register/", { username, password, email });
-      alert("Cadastro realizado com sucesso!");
-      navigate("/login");
+      // Etapa 1: Registro
+      await api.post("/api/auth/register/", { username, password, email });
+
+      // Etapa 2: Login automático
+      const res = await api.post("/api/auth/login/", { username, password });
+
+      // Etapa 3: Armazenar token e redirecionar
+      localStorage.setItem("token", res.data.access);
+      navigate("/dashboard");
     } catch (err) {
-      alert("Erro ao cadastrar. Verifique os dados.");
+      let msg = "Erro ao cadastrar. Verifique os dados.";
+      if (err.response?.data) {
+        const data = err.response.data;
+        msg = Object.values(data).flat().join(" ");
+      }
+      setErrorMsg(msg);
+      formRef.current?.resetForm();  // Resetar formulário após erro
     }
   }
 
-  return <AuthForm onSubmit={handleRegister} buttonText="Registrar" />;
+  return (
+    <AuthForm
+      ref={formRef}
+      onSubmit={handleRegister}
+      buttonText="Registrar"
+      error={errorMsg}
+    />
+  );
 }

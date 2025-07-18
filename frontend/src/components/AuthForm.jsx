@@ -1,14 +1,27 @@
-import { useState } from "react";
+// src/components/AuthForm.jsx
+import { useState, forwardRef, useImperativeHandle } from "react";
 import { Link } from "react-router-dom";
 import "./AuthForm.css";
 
-export default function AuthForm({ onSubmit, buttonText }) {
+const AuthForm = forwardRef(({ onSubmit, buttonText, error }, ref) => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     email: "",
     remember: false
   });
+
+  // Expõe função externa para resetar
+  useImperativeHandle(ref, () => ({
+    resetForm() {
+      setFormData({
+        username: "",
+        password: "",
+        email: "",
+        remember: false
+      });
+    }
+  }));
 
   function handleChange(e) {
     const { name, value, type, checked } = e.target;
@@ -26,6 +39,8 @@ export default function AuthForm({ onSubmit, buttonText }) {
   return (
     <form onSubmit={handleSubmit} className="auth-container">
       <h2>{buttonText === "Registrar" ? "Crie sua conta" : "Acesse o sistema"}</h2>
+
+      {error && <div className="auth-error">{error}</div>}
 
       {buttonText === "Registrar" && (
         <input
@@ -80,4 +95,6 @@ export default function AuthForm({ onSubmit, buttonText }) {
       )}
     </form>
   );
-}
+});
+
+export default AuthForm;

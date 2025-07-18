@@ -104,3 +104,12 @@ input[type="checkbox"] {
 .auth-footer a:hover {
   text-decoration: underline;
 }
+.auth-error {
+  background-color: rgba(255, 0, 0, 0.2);
+  color: #1915158f;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ff4d4d;
+  border-radius: 6px;
+  font-weight: bold;
+}
