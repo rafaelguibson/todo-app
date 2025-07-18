@@ -2,7 +2,9 @@ import pytest
 from rest_framework.test import APIClient
 from rest_framework import status
 from django.contrib.auth import get_user_model
-
+from django.utils.timezone import now
+from datetime import datetime, timedelta, time
+from django.utils.timezone import make_aware
 from tasks.models import Task, Category
 
 
@@ -126,3 +128,13 @@ class TestTaskAPI:
             
             assert response.status_code == 200
             assert any('relatório' in task['title'].lower() for task in response.json()['results'])
+            
+        def test_filter_tasks_by_date_range(self, authenticated_user):
+            user, client = authenticated_user
+            Task.objects.create(title='Passada', owner=user, created_at=now() - timedelta(days=3))
+            Task.objects.create(title='Recente', owner=user, created_at=now())
+
+            url = f'/api/tasks/?created_after={now().date()}'
+            response = client.get(url)
+            assert response.status_code == 200
+            assert all(task['title'] == 'Recente' for task in response.json()['results'])

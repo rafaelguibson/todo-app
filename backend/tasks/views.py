@@ -3,7 +3,8 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets, permissions, status, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
+from datetime import datetime, timedelta
+from django.utils.timezone import now 
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Task, Category
@@ -18,14 +19,27 @@ class TaskViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['completed', 'category']
     search_fields = ['title']
+    ordering_fields = ['created_at', 'title', 'completed']
+    ordering = ['-created_at']
     
     def get_queryset(self):
         user = self.request.user
-        user = self.request.user
-        return Task.objects.filter(
+        queryset = Task.objects.filter(
             models.Q(owner=user) | models.Q(shared_with=user)
-        ).distinct().order_by('-created_at')
-        
+        ).distinct()
+
+        # Filtros personalizados via query params
+        created_at__gte = self.request.query_params.get('created_after')
+        created_at__lte = self.request.query_params.get('created_before')
+
+        if created_at__gte:
+            queryset = queryset.filter(created_at__date__gte=created_at__gte)
+
+        if created_at__lte:
+            queryset = queryset.filter(created_at__date__lte=created_at__lte)
+
+        return queryset.order_by('-created_at')
+
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
         
