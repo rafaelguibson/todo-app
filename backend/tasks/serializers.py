@@ -31,11 +31,10 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'description', 'completed', 'created_at', 'owner', 'category']
         
         
-class ShareTaskSerializer(serializers.ModelSerializer):
+class ShareTaskSerializer(serializers.Serializer):
     username = serializers.CharField()
-    
+
     def validate_username(self, value):
-        try:
-            return User.objects.get(username=value)
-        except User.DoesNotExist:
+        if not User.objects.filter(username=value).exists():
             raise serializers.ValidationError("Usuário não encontrado.")
+        return value

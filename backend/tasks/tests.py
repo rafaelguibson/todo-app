@@ -59,8 +59,8 @@ class TestTaskAPI:
         
         response = client.post(url, data, format='json')
         
-        assert response.status_code == status.HTTP_404_NOT_FOUND
-        assert b'Usuário não encontrado' in response.content
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+        assert 'Usuário não encontrado' in response.json()['username'][0]
         
     def test_shared_user_can_view_but_not_edit_task(self, authenticated_user):
         owner, client = authenticated_user
@@ -90,4 +90,4 @@ class TestTaskAPI:
         response = client.post(url, data, format='json')
         
         assert response.status_code == status.HTTP_400_BAD_REQUEST
-        assert 'já existe' in str(response.content)
+        assert 'Categoria com esse nome já existe.' in response.json()['name'][0]
