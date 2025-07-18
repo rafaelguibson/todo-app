@@ -91,3 +91,38 @@ class TestTaskAPI:
         
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert 'Categoria com esse nome já existe.' in response.json()['name'][0]
+
+    def test_filter_tasks_by_completion(self, authenticated_user):
+        user, client = authenticated_user
+        Task.objects.create(title='Feita', completed=True, owner=user)
+        Task.objects.create(title='Pendente', completed=False, owner=user)
+
+        url = '/api/tasks/?completed=true'
+        response = client.get(url)
+        
+        assert response.status_code == 200
+        assert all(task['completed'] for task in response.json()['results'])
+            
+        def test_filter_tasks_by_category(self, authenticated_user):
+            user,client = authenticated_user
+            category_1 = Category.objects.create(name='Trabalho', owner=user)
+            category_2 = Category.objects.create(name='Casa', owner=user)
+            Task.objects.create(title='Faxina', category=category_2, owner=user)
+            Task.objects.create(title='Planilha', category=category_1, owner=user)
+            
+            url= f'/api/tasks/?category={category_1.id}'
+            response = client.get(url)
+            
+            assert response.status_code == 200
+            assert all(task['category'] == category_1.id for task in response.json()['results'])
+            
+        def test_search_tasks_by_title(self, authenticated_user):
+            user, client = authenticated_user
+            Task.objects.create(title='Escrever Relatorio', owner=user)
+            Task.objects.create(title='Tomar um café <3', owner=user)
+            
+            url = '/api/tasks/?search=relatório'
+            response = client.get(url)
+            
+            assert response.status_code == 200
+            assert any('relatório' in task['title'].lower() for task in response.json()['results'])
