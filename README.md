@@ -88,6 +88,6 @@ npm install
 npm run dev
 ```
 
-🌐 URLs Importantes
-    Frontend: http://localhost:5173
-    Backend API: http://localhost:8000/api/
+🌐 URLs Importantes:
+    <li>Frontend: http://localhost:5173</li>
+    <li>Backend API: http://localhost:8000/api/</li>
