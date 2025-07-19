@@ -20,15 +20,22 @@ class CategorySerializer(serializers.ModelSerializer):
         return super().create(validated_data)
         
         
+class SimpleUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username']
+        
 class TaskSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     category = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(), required=False, allow_null=True
     )
     
+    shared_with = SimpleUserSerializer(many=True, read_only=True)
+    owner = serializers.SlugRelatedField(slug_field='username', read_only=True)
     class Meta:
         model = Task
-        fields = ['id', 'title', 'description', 'completed', 'created_at', 'owner', 'category']
+        fields = ['id', 'title', 'description', 'completed', 'created_at', 'owner', 'category', 'shared_with']
         
         
 class ShareTaskSerializer(serializers.Serializer):
@@ -38,3 +45,4 @@ class ShareTaskSerializer(serializers.Serializer):
         if not User.objects.filter(username=value).exists():
             raise serializers.ValidationError("Usuário não encontrado.")
         return value
+    
