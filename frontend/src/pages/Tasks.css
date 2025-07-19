@@ -1,0 +1,90 @@
+
+/* src/pages/Tasks.css */
+.tasks-wrapper {
+  background: none no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  padding: 2rem;
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.filters button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.filters .active,
+.filters button:hover {
+  background-color: #5a74ff;
+}
+
+.tasks-container {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 12px;
+  max-width: 700px;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.15);
+  font-size: 1.1rem;
+}
+
+.task-item.done {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  font-weight: bold;
+}
+
+.pagination button {
+  background: #4a63e7;
+  color: white;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.no-tasks {
+  text-align: center;
+  padding: 2rem;
+  font-style: italic;
+}
