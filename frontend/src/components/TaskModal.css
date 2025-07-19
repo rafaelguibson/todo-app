@@ -51,3 +51,77 @@
   max-width: 500px;
   width: 100%;
 }
+
+.input-full {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.textarea-full {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.category-select-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.select-category {
+  flex: 1;
+  padding: 8px;
+  font-size: 15px;
+}
+
+.btn-add-category {
+  padding: 0 10px;
+  font-size: 20px;
+  height: 36px;
+  cursor: pointer;
+  background-color: #eeeeff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-category-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.add-category-box input {
+  flex: 1;
+  padding: 8px;
+}
+
+.add-category-box button {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 8px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 14px;
+}
+.tasks-page {
+  width: 100vw;          /* Largura total da viewport */
+  max-width: 100%;       /* Evita overflow */
+  padding: 20px;
+  box-sizing: border-box;
+}
