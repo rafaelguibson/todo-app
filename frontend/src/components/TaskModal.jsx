@@ -10,7 +10,7 @@ export default function TaskModal({ onClose, onCreated }) {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    api.get("/api/categories/").then(res => setCategories(res.data));
+    api.get("/api/categories/").then(res => setCategories(res.data.results));
   }, []);
 
   async function handleSubmit(e) {

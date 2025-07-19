@@ -2,16 +2,19 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8000", // ou a URL do seu backend
+  baseURL: "http://localhost:8000", // ou seu backend
 });
 
-// Adiciona o token automaticamente nas requisições
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+// Interceptor para inserir o token antes de cada request
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 export default api;
